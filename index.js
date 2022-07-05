@@ -5,6 +5,7 @@ const { token } = require('./config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
+//Get Events
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
@@ -18,6 +19,7 @@ for (const file of eventFiles) {
 	}
 }
 
+//Get Commands
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -28,6 +30,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+//Execute Command
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
@@ -43,9 +46,16 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
+//Console Logging all Slash Commands
 client.on('interactionCreate', interaction => {
 	if (!interaction.isCommand()) return;
 	console.log(interaction);
+});
+
+//Button Stuff
+client.on('interactionCreate', interaction => {
+	if (!interaction.isButton()) return;
+	console.log("Someone pressed a button");
 });
 
 client.login(token);
