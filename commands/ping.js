@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const { time } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,44 +7,12 @@ module.exports = {
 		.setDescription('Replies with Pong!'),
 
 	async execute(interaction) {
-		const row = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('primary')
-					.setLabel('Confirm')
-					.setStyle('PRIMARY'),
-			);
-		
-		const rowDisabled = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('primary')
-					.setLabel('Confirmed')
-					.setStyle('SECONDARY')
-					.setDisabled(true),
-			);
+		const date = new Date();
 
-		const embed = new MessageEmbed()
-			.setColor('#0099ff')
-			.setTitle('Some title')
-			.setURL('https://discord.js.org')
-			.setDescription('Some description here');
+		const timeString = time(date);
+		const relative = time(date, 'R');
 
-		await interaction.reply({ content: 'Pong!', ephemeral: true, embeds: [embed], components: [row] });
-
-
-		//Button Click Listener
-		const filter = i => i.customId === 'primary';
-
-		const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
-
-		collector.on('collect', async i => {
-			if (i.customId === 'primary') {
-				await i.update({ content: 'A button was clicked!', components: [rowDisabled] });
-			}
-		});
-
-		collector.on('end', collected => console.log(`Collected ${collected.size} items`));
-
+		interaction.reply(`The Time value is: \`${date}\` \`${timeString}\` \`${relative}\``);
+		await interaction.reply({ content: 'Pong!', ephemeral: true});
 	},
 };

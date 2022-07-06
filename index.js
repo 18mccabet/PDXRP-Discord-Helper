@@ -3,7 +3,7 @@ const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_SCHEDULED_EVENTS] });
 
 //Get Events
 const eventsPath = path.join(__dirname, 'events');
@@ -49,7 +49,12 @@ client.on('interactionCreate', async interaction => {
 //Console Logging all Slash Commands
 client.on('interactionCreate', interaction => {
 	if (!interaction.isCommand()) return;
-	console.log(interaction);
+	//console.log(interaction);
+});
+
+//When a new server event is created
+client.on('guildScheduledEventCreate', interaction => {
+	console.log("A new event has been scheduled");
 });
 
 //Button Stuff

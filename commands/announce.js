@@ -40,7 +40,6 @@ module.exports = {
 		const rules = interaction.options.getString('ruleset');
 		const thumbnail = interaction.options.getAttachment('thumbnail');
 
-
 		const string = 'Are you sure everything is correct?'
 		const italicString = italic(string);
 
@@ -66,7 +65,7 @@ module.exports = {
 			.setColor('#0099ff')
 			.setTitle(name)
 			.setURL('https://discord.js.org/')
-			.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({dynamic: true, size: 512}), url: 'https://discord.js.org' })
 			.setDescription(desc)
 			.setThumbnail(thumbnail&&thumbnail.proxyURL)
 			.addFields(
@@ -78,12 +77,11 @@ module.exports = {
 			.addField('Inline field title', 'Some value here', true)
 			.setImage(thumbnail&&thumbnail.proxyURL)
 			.setTimestamp()
-			.setFooter({ text: 'Lord is a cool Dude.', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+			.setFooter({ text: 'Lord is a cool Dude.', iconURL: 'https://cdn.discordapp.com/attachments/953142716840177677/994184954915336262/lordIcon_2.png' });
 
 		
 		//Reply
-		interaction.reply({ embeds: [embed], components: [row] });
-		
+		interaction.reply({ embeds: [embed], components: [row] });		
 
 		//Button Click Listener
 		const filter = i => i.customId === 'primary';
