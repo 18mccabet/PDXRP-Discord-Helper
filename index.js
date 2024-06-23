@@ -1,12 +1,12 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection, Events, GuildScheduledEventManager } = require('discord.js');
 const { token, MONGO_URI } = require('./config.json');
 const mongoose = require('mongoose')
 
-const eventSchema = require('./model/serverEvent-Schema')
+const eventSchema = require('./model/serverEvent-schema')
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_SCHEDULED_EVENTS] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Partials.Channel] });
 
 //Get Events
 const eventsPath = path.join(__dirname, 'events');
@@ -33,21 +33,6 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-//On Ready
-// client.on('ready', async () => {
-// 	await mongoose.connect(MONGO_URI, {
-// 		keepAlive: true,
-// 	})
-
-// 	setTimeout(async () => {
-// 		await new testSchema({
-// 			message: 'Hello World',
-// 		}).save()
-// 	}, 1000)
-
-// 	console.log("Database things")
-// })
-
 //Execute Command
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -62,12 +47,6 @@ client.on('interactionCreate', async interaction => {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
-});
-
-//Console Logging all Slash Commands
-client.on('interactionCreate', interaction => {
-	if (!interaction.isCommand()) return;
-	//console.log(interaction);
 });
 
 //When a new server event is created
@@ -106,5 +85,33 @@ client.on('interactionCreate', interaction => {
 	if (!interaction.isButton()) return;
 	console.log("Someone pressed a button");
 });
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isStringSelectMenu()) return;
+
+	const selected = interaction.values.join(', ');
+
+	console.log(`The user selected ${selected}!`);
+	
+	const requestedRoles = []
+	
+	interaction.values.forEach(e => {
+		requestedRoles.push(interaction.guild.roles.cache.find(role => role.name === e))
+	});
+	
+
+	const member = interaction.user
+
+	console.log(interaction.user,"member")
+	member.roles.add(role);
+
+
+	await interaction.reply({
+		content: `The user selected ${selected}!`, 
+		ephemeral:true
+	});
+
+});
+
 
 client.login(token);

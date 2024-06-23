@@ -1,6 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const { italic } = require('@discordjs/builders');
+const { MessageActionRow, MessageButton, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const { ButtonStyle } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -20,10 +19,10 @@ module.exports = {
 			option.setName('datetime')
 				.setDescription('The datetime of the event')
 		)
-		.addChannelOption(option =>
-			option.setName('category')
-				.setDescription('The announcement channel you would like the event announced')
-		)
+		// .addChannelOption(option =>
+		// 	option.setName('category')
+		// 		.setDescription('The announcement channel you would like the event announced')
+		// )
 		.addStringOption(option =>
 			option.setName('ruleset')
 				.setDescription('The associated ruleset')
@@ -36,7 +35,7 @@ module.exports = {
 		const name = interaction.options.getString('name');
 		const desc = interaction.options.getString('desc');
 		const date = interaction.options.getString('datetime');
-		const category = interaction.options.getChannel('category');
+		// const category = interaction.options.getChannel('category');
 		const rules = interaction.options.getString('ruleset');
 		const thumbnail = interaction.options.getAttachment('thumbnail');
 
@@ -49,7 +48,7 @@ module.exports = {
 				new MessageButton()
 					.setCustomId('primary')
 					.setLabel('Confirm')
-					.setStyle('PRIMARY'),
+					.setStyle(ButtonStyle.Primary),
 			);
 		
 		const rowDisabled = new MessageActionRow()
@@ -57,11 +56,11 @@ module.exports = {
 				new MessageButton()
 					.setCustomId('primary')
 					.setLabel('Confirmed')
-					.setStyle('SECONDARY')
+					.setStyle(ButtonStyle.Secondary)
 					.setDisabled(true),
 			);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor('#0099ff')
 			.setTitle(name)
 			.setURL('https://discord.js.org/')
@@ -81,7 +80,7 @@ module.exports = {
 
 		
 		//Reply
-		interaction.reply({ embeds: [embed], components: [row] });		
+		await interaction.reply({ embeds: [embed], components: [row] });		
 
 		//Button Click Listener
 		const filter = i => i.customId === 'primary';

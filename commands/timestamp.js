@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { time } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,6 +13,6 @@ module.exports = {
 		//const relative = time(timestamp, 'R');
         
 
-		interaction.reply(`The Time value is: \`${timestamp}\` \`${readable}\``);
+		await interaction.reply(`The Time value is: \`${timestamp}\` \`${readable}\``);
 	},
 };

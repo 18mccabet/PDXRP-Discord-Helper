@@ -1,6 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { time } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,8 +11,8 @@ module.exports = {
 
         console.log(target, "target")
 
-        const Response = new MessageEmbed()
-            .setColor("AQUA")
+        const Response = new EmbedBuilder()
+            // .setColor("AQUA")
             .setAuthor(target.tag, target.avatarURL({dynamic: true, size: 512}))
             .setThumbnail(target.avatarURL({dynamic: true, size: 512}))
             .addField("ID", `${target.id}`)

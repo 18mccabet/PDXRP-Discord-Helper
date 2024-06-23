@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,7 +10,7 @@ module.exports = {
 	async execute(interaction) {
 		const string = interaction.options.getString('test');
 		const string2 = interaction.options.getString('test2');
-		interaction.reply(`The options value is: \`${string}\` \`${string2}\``);
+		await interaction.reply(`The options value is: \`${string}\` \`${string2}\``);
 		//console.log(string);
 	},
 };
