@@ -1,6 +1,8 @@
 # PDXRP-Discord-Helper
 A discord bot to facilitate game organization on the PDX RP Discord
 
+# /Avatar *user*
+The avatar command allows staff members to view and enlarged image of a user's profile picturew. This may be used to confirm the contents of the image, which may be difficult due to the small image size
 
 # /Announce
 The Announce Command is intended to allow Hosts to post announcments in the Announcements channel. This channel is lock from anyone sending messages not through this command
